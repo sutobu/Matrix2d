@@ -56,6 +56,8 @@ namespace Matrix2dLib
             => new Matrix2D(left.a + right.a, left.b + right.b,
                             left.c + right.c, left.d + right.d);
 
+        //mnozenie
+
 
     }
 }
