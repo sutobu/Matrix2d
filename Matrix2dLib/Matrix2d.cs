@@ -5,7 +5,7 @@ namespace Matrix2dLib
     //immutable class
     public class Matrix2D : IEquatable<Matrix2D>
     {
-        int a, b, c, d; //private fields
+        private readonly int a, b, c, d; //private fields
         /*
          -----
          |a  b|
@@ -45,18 +45,60 @@ namespace Matrix2dLib
 
         }
 
-        public static bool operator == (Matrix2D left, Matrix2D right) 
-            => left.Equals(right);
-        public static bool operator !== (Matrix2D left, Matrix2D right) 
-            !=> !(left == right);
+        public static bool operator ==(Matrix2D left, Matrix2D right)
+        {
+            if (ReferenceEquals(left, null))
+                return ReferenceEquals(right, null);
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(Matrix2D left, Matrix2D right)
+        {
+            return !(left == right);
+        }
 
         //dodawanie
 
-        public static Matrix2D operator *(Matrix2D left, Matrix2D right)
+        public static Matrix2D operator +(Matrix2D left, Matrix2D right)
             => new Matrix2D(left.a + right.a, left.b + right.b,
                             left.c + right.c, left.d + right.d);
 
+        //odejmowanie
+        public static Matrix2D operator -(Matrix2D left, Matrix2D right)
+            => new Matrix2D(left.a - right.a, left.b - right.b,
+                            left.c - right.c, left.d - right.d);
+
         //mnozenie
+        public static Matrix2D operator *(Matrix2D left, Matrix2D right)
+            => new Matrix2D(
+                left.a * right.a + left.b * right.c,
+                left.a * right.b + left.b * right.d,
+                left.c * right.a + left.d * right.c,
+                left.c * right.b + left.d * right.d
+            );
+        //mnozenie przez skalar
+        public static Matrix2D operator *(Matrix2D left, int right)
+            => new Matrix2D(left.a * right, left.b * right,
+                            left.c * right, left.d * right);
+
+        // scalar * macierz
+        public static Matrix2D operator *(int left, Matrix2D right)
+            => right * left;
+
+        //(-1) * A
+        public static Matrix2D operator -(Matrix2D left)
+            => new Matrix2D(-left.a, -left.b, -left.c, -left.d);
+
+        // transponowanie
+        public Matrix2D Transpose()
+            => new Matrix2D(a, c, b, d);
+
+        //wyznacznik jako metoda klasy
+        public static int Determinant(Matrix2D m)
+            => m.a * m.d - m.b * m.c;
+
+        //wyznacznik jako metoda instancji
+        public int Det() => Determinant(this);
 
 
     }
