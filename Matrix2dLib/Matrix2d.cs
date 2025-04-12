@@ -100,6 +100,44 @@ namespace Matrix2dLib
         //wyznacznik jako metoda instancji
         public int Det() => Determinant(this);
 
+        // rzutowanie obiektu Matrix2D na typ tablicy regularnej int[2,2]
+        public static explicit operator int[,](Matrix2D m)
+            => new int[2, 2] { { m.a, m.b }, { m.c, m.d } };
 
+        //implementacja klasy Parse()
+
+        public static Matrix2D Parse(string s)
+        {
+            try
+            {
+                var cleaned = s.Replace("[", "").Replace("]", "");
+                var parts = cleaned.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+                if (parts.Length != 4)
+                    throw new FormatException("Invalid format, expected 4 elements");
+
+                int a = int.Parse(parts[0].Trim());
+                int b = int.Parse(parts[1].Trim());
+                int c = int.Parse(parts[2].Trim());
+                int d = int.Parse(parts[3].Trim());
+                return new Matrix2D(a, b, c, d);
+            }
+            catch (FormatException ex)
+            {
+                throw new FormatException("Invalid format", ex);
+            }
+            catch (OverflowException ex)
+            {
+                throw new OverflowException("Number too large", ex);
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new ArgumentNullException("Input string is null", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while parsing the matrix", ex);
+            }
+        }
     }
 }
