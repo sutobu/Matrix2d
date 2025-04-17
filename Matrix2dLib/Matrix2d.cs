@@ -58,8 +58,15 @@ namespace Matrix2dLib
             return !(left == right);
         }
 
-        //dodawanie
+        //konwersja jawna z Matrix2d na int[,]
+        public static explicit operator int[,](Matrix2D m)
+           => new int[,] { { m.a, m.b }, { m.c, m.d } };
 
+        //konwersja niejawna z int[,] na Matrix2d
+        public static implicit operator Matrix2D(int[,] m)
+            => new Matrix2D(m[0, 0], m[0, 1], m[1, 0], m[1, 1]);
+
+        //dodawanie
         public static Matrix2D operator +(Matrix2D left, Matrix2D right)
             => new Matrix2D(left.a + right.a, left.b + right.b,
                             left.c + right.c, left.d + right.d);
@@ -99,11 +106,10 @@ namespace Matrix2dLib
             => m.a * m.d - m.b * m.c;
 
         //wyznacznik jako metoda instancji
-        public int Det() => Determinant(this);
-
-        // rzutowanie obiektu Matrix2D na typ tablicy regularnej int[2,2]
-        public static explicit operator int[,](Matrix2D m)
-            => new int[2, 2] { { m.a, m.b }, { m.c, m.d } };
+        public double Det()
+        {
+            return a * d - b * c;
+        }
 
         //implementacja klasy Parse()
 
